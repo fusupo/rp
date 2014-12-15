@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>time calculator</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            function timeDiff(){
+                var t1 = document.getElementById("t11").value.split(':'),
+                    t2 = document.getElementById("t12").value.split(':');
+                    //t3 = document.getElementById("t21").value.split(':'),
+                    //t4 = document.getElementById("t22").value.split(':'),
+                    //t5 = document.getElementById("t31").value.split(':'),
+                    //t6 = document.getElementById("t32").value.split(':');
+                var x1 = parseInt(t1[0]*60) + parseInt(t1[1]);
+                var x2 = parseInt(t2[0]*60) + parseInt(t2[1]);
+                //var x3 = parseInt(t3[0]*60) + parseInt(t3[1]);
+                //var x4 = parseInt(t4[0]*60) + parseInt(t4[1]);
+                //var x5 = parseInt(t5[0]*60) + parseInt(t5[1]);
+                //var x6 = parseInt(t6[0]*60) + parseInt(t6[1]);
+                var result = (x2 - x1);
+                
+                alert("spolu cas v minutach " + result);
+            }
+        
+        </script>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>START TIME</th>
+                <th>END TIME</th>
+            </tr>
+            <tr>
+                <td><input id="t11"></td>
+                <td><input id="t12"></td>
+            </tr>
+            <tr>
+                <td><input id="t21"></td>
+                <td><input id="t22"></td>
+            </tr>
+            <tr>
+                <td><input id="t31"></td>
+                <td><input id="t32"></td>
+            </tr>
+        </table>
+        <button onclick="timeDiff()">Compute</button>
+        <button onclick="window.location.reload()">Clear</button>
+        <button>Move to SUM</button>
+        <p>time: "document" </p>
+    </body>
+</html>
