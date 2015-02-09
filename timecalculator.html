@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Time Calculator</title>
+	<style type="text/css">
+			table, td {
+			   border: 1px solid #ccc;
+			}
+			table td {
+			   border-bottom: none;
+			   border-left: none;
+			   border-right: none;
+			}
+	</style>
+</head>
+
+<body>
+	<div style="margin-top:20px;margin-left:100px;width:700px">
+		<h2>Time Calculator</h2>
+		
+			<div style="display:inline;float: left;width:400px">
+				<table style="width:100%">
+				  <thead>
+				  		<tr style="border:1px solid #ccc;">
+					  		<td><strong>Start Time</strong></td>
+					  		<td><strong>End Time</strong></td>
+				  		</tr>
+				  </thead>
+				  <tbody>
+				  		<tr>
+					  		<td><input id="time-first-1" type="text" class="form-control" placeholder="HH:MM"></td>
+					  		<td><input id="time-first-2" type="text" class="form-control" placeholder="HH:MM"></td>
+				  		</tr>
+				  		<tr>
+					  		<td><input id="time-second-1" type="text" class="form-control" placeholder="HH:MM"></td>
+					  		<td><input id="time-second-2" type="text" class="form-control" placeholder="HH:MM"></td>
+				  		</tr>
+				  		<tr>
+					  		<td><input id="time-third-1" type="text" class="form-control" placeholder="HH:MM"></td>
+					  		<td><input id="time-third-2" type="text" class="form-control" placeholder="HH:MM"></td>
+				  		</tr>
+				  		<tr>
+				  			<td colspan="2">
+					  			<table class="table">
+					  				<tr>
+					  					<td><button id="compute" type="button" class="btn btn-success">Compute</button></td>
+					  					<td><button id="clear" type="button" class="btn btn-danger">Clear</button></td>
+					  					<td><button id="move-to-sum" type="button" class="btn btn-primary">Move To SUM</button></td>
+					  				</tr>
+					  			</table>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td colspan="2">
+				  				SUM = <span id="res"></span>
+				  			</td>
+				  		</tr>
+				  </tbody>
+				</table>
+
+			</div>
+			<div style="display:inline; float: right;width:300px">
+				<table id="output" style="width:100%">
+					  <thead>
+					  		<tr>
+						  		<td><strong>DAY</strong></td>
+						  		<td><strong>HOURS</strong></td>
+					  		</tr>
+					  </thead>
+					  <tbody>
+					  		<tr>
+						  		<td>Day1</td>
+						  		<td><input  class="sum_row" type="text" class="form-control" placeholder="HH:MM"></td>
+					  		</tr>
+					  		<tr>
+						  		<td>Day2</td>
+						  		<td><input  class="sum_row"  type="text" class="form-control" placeholder="HH:MM"></td>
+					  		</tr>
+					  		<tr>
+						  		<td>Day3</td>
+						  		<td><input  class="sum_row" type="text" class="form-control" placeholder="HH:MM"></td>
+					  		</tr>
+					  		<tr>
+						  		<td>Day4</td>
+						  		<td><input  class="sum_row" type="text" class="form-control" placeholder="HH:MM"></td>
+					  		</tr>
+					  		<tr>
+						  		<td>Day5</td>
+						  		<td><input  class="sum_row" type="text" class="form-control" placeholder="HH:MM"></td>
+					  		</tr>
+					  		
+
+
+					  </tbody>
+				</table>	
+				<div><span>SUM = </span><span id="netSUM"></span></div>
+			</div>
+		
+	</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+	var computeBtnObj = document.getElementById('compute');
+	var clearBtnObj = document.getElementById('clear');
+	computeBtnObj.onclick = function(){
+
+		var timeFirst1 = document.getElementById('time-first-1').value;
+		var timeFirst2 = document.getElementById('time-first-2').value;
+
+		var timeSecond1 = document.getElementById('time-second-1').value;
+		var timeSecond2 = document.getElementById('time-second-2').value;
+
+		var timeThird1 = document.getElementById('time-third-1').value;
+		var timeThird2 = document.getElementById('time-third-2').value;
+
+		if(timeFirst1 == '' || timeFirst2 == ''){
+			timeFirst1 = '00:00';
+			timeFirst2 = '00:00';
+		}
+		if(timeSecond1 == '' || timeSecond2 == ''){
+			timeSecond1 = '00:00';
+			timeSecond2 = '00:00';
+		}
+		if(timeThird1 == '' || timeThird2 == ''){
+			timeThird1 = '00:00';
+			timeThird2 = '00:00';
+		}
+
+		var diff1 = diff(timeFirst1, timeFirst2);
+		var diff2 = diff(timeSecond1, timeSecond2);
+		var diff3 = diff(timeThird1, timeThird2);
+
+		var netSum = timeSummation(diff1,diff2,diff3);
+		document.getElementById('res').innerHTML=netSum;
+	};
+
+
+	clearBtnObj.onclick = function(){
+		document.getElementById('time-first-1').value ='';
+		document.getElementById('time-first-2').value ='';
+		document.getElementById('time-second-1').value ='';
+		document.getElementById('time-second-2').value ='';
+		document.getElementById('time-third-1').value ='';
+		document.getElementById('time-third-2').value ='';
+		document.getElementById('res').innerHTML = '';
+	};
+
+	var moveToSum = document.getElementById('move-to-sum');
+	moveToSum.onclick = function(){
+		var sumResult = document.getElementById('res').innerHTML;
+		var sumRows = document.getElementsByClassName("sum_row");
+		var totalRows = sumRows.length;
+		if(totalRows != 30) {
+			for (var i = 0; i < sumRows.length; i++) {
+				if(sumRows[i].value == ''){
+					if(i == totalRows-1){
+						insertNewRow(totalRows+1);
+					}
+					sumRows[i].value = sumResult;
+					break;
+				}
+			}
+		}
+	}
+
+
+	function insertNewRow(totalRows) {
+
+  		var tableRef = document.getElementById('output').getElementsByTagName('tbody')[0];
+
+		var newRow   = tableRef.insertRow(tableRef.rows.length);
+
+		var Cell1  = newRow.insertCell(0);
+
+		var newText  = document.createTextNode('Day'+totalRows)
+		Cell1.appendChild(newText);
+
+		var cell2  = newRow.insertCell(1);
+		var input = document.createElement("input");
+		input.type = "text";
+		input.className = "sum_row";
+		input.placeHolder = 'HH:MM';
+		cell2.appendChild(input);
+	}
+
+
+
+	setInterval(interval,3000);
+
+	function interval(){
+		var sumRows = document.getElementsByClassName("sum_row");
+		var HH = 0;
+		var MM = 0;
+		for (var i = 0; i < sumRows.length; i++) {
+			if(sumRows[i].value != ''){
+				var time = sumRows[i].value.split(':');
+				HH = HH+Number(time[0]);
+				MM = MM+Number(time[1]);
+			}
+			
+		}
+
+		var hrs = Math.floor(parseInt(MM / 60));
+		HH = HH+hrs;
+		MM = MM % 60;
+		var netRes =  (HH < 9 ? "0" : "") + HH + ":" + (MM < 9 ? "0" : "") + MM;
+		document.getElementById('netSUM').innerHTML = netRes;
+		HH = 0;
+		MM = 0;
+
+	}
+
+
+	function diff(start, end) {
+	    start = start.split(":");
+	    end = end.split(":");
+	    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+	    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+	    var diff = endDate.getTime() - startDate.getTime();
+	    var hours = Math.floor(diff / 1000 / 60 / 60);
+	    diff -= hours * 1000 * 60 * 60;
+	    var minutes = Math.floor(diff / 1000 / 60);
+	    
+	    return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+	}
+
+	function timeSummation(first,second,third) {
+		var t1 = first.split(':');
+		var t2 = second.split(':');
+		var t3 = third.split(':');
+		var mins = Number(t1[1])+Number(t2[1])+Number(t3[1]);
+		var hrs = Math.floor(parseInt(mins / 60));
+		hrs = Number(t1[0])+Number(t2[0])+Number(t3[0])+hrs;
+		mins = mins % 60;
+		return (hrs < 9 ? "0" : "") + hrs + ":" + (mins < 9 ? "0" : "") + mins;
+		
+	}
+
+
+
+</script>
