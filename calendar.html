@@ -1,122 +1,344 @@
+
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>Calendar</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script>
-        function setToday() {
-        var now   = new Date();
-        var day   = now.getDate();
-        var month = now.getMonth();
-        var year  = now.getYear();
-        year += 1900;
-        this.focusDay = day;
-        document.calControl.month.selectedIndex = month;
-        document.calControl.year.value = year;
-        displayCalendar(month, year);
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <style type="text/css">
+      .container {
+        background-color: #fbfbfb;
+        border: 1px solid #AAA;
+        border-bottom: 1px solid #888;
+        border-radius: 3px;
+        color: black;
+        box-shadow: 0px 2px 2px #AAA;
+        max-width: 900px;
+        margin-left: 15%;
+        padding: 20px;
         }
-        function isFourDigitYear(year) {
-        if (year.length !== 4) {
-        alert ("Sorry, the year must be four-digits in length.");
-        document.calControl.year.select();
-        document.calControl.year.focus();
-        } else { return true; }
+        .month_tab{
+            background-color: darkgray ;
+            padding: 10px;
+            color: white;
+            border-top-right-radius: 19px;
+            cursor: pointer;
         }
-        function selectDate() {
-        var year  = document.calControl.year.value;
-        if (isFourDigitYear(year)) {
-        var day   = 0;
-        var month = document.calControl.month.selectedIndex;
-        displayCalendar(month, year);
+        .month_tab:hover{
+            background-color: orange;
+        }
+        .mon_active{
+            background-color: orange;
+        }
+        table.reference {
+            width: 100%;
+            max-width: 100%;
+            border: 1px solid #dddddd;
+            background-color: white;
+        }
+        table.reference tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        table.reference tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        table.reference>tbody>tr>td, table.reference>tfoot>tr>td {
+            padding: 8px;
+            line-height: 1.42857143;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
+        .holiday{
+             background-color: yellow;
+        }
+        .today{
+            background-color: yellowgreen;
+            border-radius: 5px;
+            color: white;
+        }
+    </style>
+  </head>
+  <body  onload="start()" style=" background-color: #E6E6E6; ">
+      <div class="container" >
+        <div class="input" >
+          <label>Select Year</label>
+          <select style=" margin-left: 20px; "  onchange="get_other_input()" name="year" id="Cal_year" class="input-small">
+            <option value="1970">1970</option>
+            <option value="1971">1971</option>
+            <option value="1972">1972</option>
+            <option value="1973">1973</option>
+            <option value="1974">1974</option>
+            <option value="1975">1975</option>
+            <option value="1976">1976</option>
+            <option value="1977">1977</option>
+            <option value="1978">1978</option>
+            <option value="1979">1979</option>
+            <option value="1980">1980</option>
+            <option value="1981">1981</option>
+            <option value="1982">1982</option>
+            <option value="1983">1983</option>
+            <option value="1984">1984</option>
+            <option value="1985">1985</option>
+            <option value="1986">1986</option>
+            <option value="1987">1987</option>
+            <option value="1988">1988</option>
+            <option value="1989">1989</option>
+            <option value="1990">1990</option>
+            <option value="1991">1991</option>
+            <option value="1992">1992</option>
+            <option value="1993">1993</option>
+            <option value="1994">1994</option>
+            <option value="1995">1995</option>
+            <option value="1996">1996</option>
+            <option value="1997">1997</option>
+            <option value="1998">1998</option>
+            <option value="1999">1999</option>
+            <option value="2000">2000</option>
+            <option value="2001">2001</option>
+            <option value="2002">2002</option>
+            <option value="2003">2003</option>
+            <option value="2004">2004</option>
+            <option value="2005">2005</option>
+            <option value="2006">2006</option>
+            <option value="2007">2007</option>
+            <option value="2008">2008</option>
+            <option value="2009">2009</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015" selected="">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+            <option value="2027">2027</option>
+            <option value="2028">2028</option>
+            <option value="2029">2029</option>
+            <option value="2030">2030</option>
+            <option value="2031">2031</option>
+            <option value="2032">2032</option>
+            <option value="2033">2033</option>
+            <option value="2034">2034</option>
+            <option value="2035">2035</option>
+            <option value="2036">2036</option>
+            <option value="2037">2037</option>
+          </select>
+          <input type="hidden" id="selected_month">
+          <input style=" margin-left: 50px; " type="checkbox" id="hide_holidayshide_holidays" name="hide_holidays"  onchange="get_other_input()" value="Hide Holidays">Hide Holidays
+        </div>
+        <div class="output" >
+            <h3>
+                <span class="month_tab" id="0" onclick=" get_other_input()">Jan</span>
+                <span class="month_tab" id="1" onclick=" get_other_input()">Feb</span>
+                <span class="month_tab" id="2" onclick=" get_other_input()">Mar</span>
+                <span class="month_tab" id="3" onclick=" get_other_input()">Apr</span>
+                <span class="month_tab" id="4" onclick=" get_other_input()">May</span>
+                <span class="month_tab" id="5" onclick=" get_other_input()">Jun</span>
+                <span class="month_tab" id="6" onclick=" get_other_input()">Jul</span>
+                <span class="month_tab" id="7" onclick=" get_other_input()">Aug</span>
+                <span class="month_tab" id="8" onclick=" get_other_input()">Sep</span>
+                <span class="month_tab" id="9" onclick=" get_other_input()">Oct</span>
+                <span class="month_tab" id="10" onclick=" get_other_input()">Nov</span>
+                <span class="month_tab" id="11" onclick=" get_other_input()">Dec</span>
+            </h3><br>
+            <div id="table">
+                <table class="reference">
+                    <tbody>
+                        <tr>      
+                            <th>Sat</th>
+                            <th>Sun</th>
+                            <th>Mon</th>
+                            <th>Tue</th>
+                            <th>Wed</th>      
+                            <th>Thu</th>
+                            <th>Fri</th>
+                        </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <br>
+                <b id="working_days">Works hours this month: </b>
+            </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        function start(){
+            var date=new Date();
+            load_caledar(date.getFullYear(),date.getMonth(), false);
+            document.getElementById(date.getMonth()).className='month_tab mon_active';
+            document.getElementById("selected_month").value=date.getMonth();
+        }
+        function get_other_input(){
+            var includeHolidays=document.getElementById("hide_holidayshide_holidays").checked;
+            var selct=document.getElementById('Cal_year').options[document.getElementById('Cal_year').selectedIndex].text;
+            if (event.target.id=='Cal_year') {
+                load_caledar(selct,document.getElementById('selected_month').value,includeHolidays);
+            }else if (event.target.id=='hide_holidayshide_holidays') {
+                load_caledar(selct,document.getElementById('selected_month').value,includeHolidays);
+                disable_tabs();
+                document.getElementById(document.getElementById('selected_month').value).className='month_tab mon_active';
+            }else {
+                document.getElementById('selected_month').value=event.target.id;
+                load_caledar(selct,event.target.id,includeHolidays);
+                disable_tabs();
+                document.getElementById(event.target.id).className='month_tab mon_active';
             }
         }
-
-        function displayCalendar(month, year) {
-            month = parseInt(month);
-            year = parseInt(year);
-            var i = 0;
-            var days = getDaysInMonth(month+1,year);
-            var firstOfMonth = new Date (year, month, 1);
-            var startingPos = firstOfMonth.getDay();
-            days += startingPos;
-            document.calButtons.calPage.value  =   " Su Mo Tu We Th Fr Sa";
-            document.calButtons.calPage.value += "\n --------------------";
-            for (i = 0; i < startingPos; i++) {
-            if ( i%7 === 0 ) document.calButtons.calPage.value += "\n ";
-            document.calButtons.calPage.value += "   ";
-            }
-            for (i = startingPos; i < days; i++) {
-            if ( i%7 === 0 ) document.calButtons.calPage.value += "\n ";
-            if (i-startingPos+1 < 10)
-            document.calButtons.calPage.value += "0";
-            document.calButtons.calPage.value += i-startingPos+1;
-            document.calButtons.calPage.value += " ";
-            }
-            for (i=days; i<42; i++)  {
-            if ( i%7 === 0 ) document.calButtons.calPage.value += "\n ";
-            document.calButtons.calPage.value += "   ";
-            }
-            document.calControl.Go.focus();
+        function load_caledar(year, month, includeHolidays){
+            var date_year=year;
+            var date_month=month;
+            var month_end_date=get_total_days_in_moth(date_year,date_month);
+            var date_array = new Array();
+            var table='<table class="reference"><tbody><tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>';
+            for (var i = 1; i <= 32; i++) {
+                var month_start_date=get_first_day_of_month(date_year,date_month, i);
+                if (month_start_date.getMonth()==date_month) {
+                    date_array.push(month_start_date);
+                } 
+            };
+            var dif=date_array[0].getDay();
+            for (var i = 0; i < dif; i++) {
+                date_array.unshift("__");
+            };
+            for (var i = 0; i < date_array.length; i++) {
+                var temp= date_array[i];
+                if (i>=dif) {
+                    var today_date=new Date();
+                    if (today_date.getDate()==temp.getDate() && today_date.getFullYear()==temp.getFullYear() && today_date.getMonth()==temp.getMonth()) {
+                        today_date=true;
+                    }else{
+                        today_date=false;
+                    }
+                    if(check_holiday(temp) && includeHolidays==false){
+                         temp=temp.getDate()+' <span class="holiday">&nbsp;&nbsp;&nbsp;H&nbsp;&nbsp;&nbsp;</span>';
+                    }else{
+                        temp=temp.getDate();
+                    }
+                }
+                else{
+                }
+                if (i==0) {
+                    table=table+'<tr>';
+                }
+                if (i%7==0) {
+                    table=table+'</tr>';
+                }
+                if (today_date==true) {
+                    table=table+'<td class="today">'+temp+'</td>';
+                }else{
+                    table=table+'<td>'+temp+'</td>';
+                }
+                
+            };
+            table=table+'</tbody></table>';
+            document.getElementById('table').innerHTML =table;
+            count_working_hours(year, month);
         }
-        function getDaysInMonth(month,year)  {
-            var days;
-            if (month===1 || month===3 || month===5 || month===7 || month===8 || month===10 || month===12)  days=31;
-            else if (month===4 || month===6 || month===9 || month===11) days=30;
-            else if (month===2)  {
-            if (isLeapYear(year)) { days=29; }
-            else { days=28; }
-            }
-            return (days);
+        function get_total_days_in_moth(year, month){
+            var lastDate = new Date(year, month+1, 0);
+            //return lastDate.getDate(); // return date
+            return lastDate;
+            /*var year=2015;
+            var mos=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
+            for (i = 0; i < 12; i++) {
+                var lastDate = new Date(year, i+1, 0);
+                console.log(lastDate);
+                console.log('Last day of ' + mos[i] + ' is ' + lastDate.getDate()+'<br>');
+            } */
         }
-        function isLeapYear (Year) {
-            if (((Year % 4)===0) && ((Year % 100)!==0) || ((Year % 400)===0)) {
-            return (true);
-            } else { return (false); }
+        function get_first_day_of_month(year, month, date){
+            var firstDay = new Date(year, month, date);
+            return firstDay;
         }
-        </script>
-    </head>
-    
-    <body>
-        <h2>Calendar under construction ...</h2>
-        <form NAME="calControl" onSubmit="return false;">
-        <table CELLPADDING=0 CELLSPACING=0 BORDER=0>
-        <tr><td COLSPAN=7>
-
-        <select NAME="month" onChange="selectDate()">
-           <option>January
-           <option>February
-           <option>March
-           <option>April
-           <option>May
-           <option>June
-           <option>July
-           <option>August
-           <option>September
-           <option>October
-           <option>November
-           <option>December
-        </select>
-                <input name="year" type=TEXT size=4 maxlength=4 value="2014">
-                <input type="button" name="Go" value="GO" onClick="selectDate()">
-
-        </td>
-        </tr>
-        </from>
-
-        <FORM NAME="calButtons">
-        <tr><td align="center"><textarea FONT="Courier" NAME="calPage" WRAP=no ROWS=8 COLS=22></textarea></td>
-        <tr><td>
-        <input TYPE=BUTTON VALUE="This month"    onClick="setToday()">
-
-        </td></tr>
-
-        </table>
-        </form>
-    </body>
+        function check_holiday(date){
+            var date_temp_array=new Array(new Date(1993,0,1), new Date(1993,0,6), new Date(1993,4,1), new Date(1993,4,8), new Date(1993,6,5), new Date(1993,7,29), new Date(1993,8,1), new Date(1993,8,15), new Date(1993,10,1), new Date(1993,10,17), new Date(1993,11,24), new Date(1993,11,25), new Date(1993,11,26));
+            for (var i = 0; i < date_temp_array.length; i++) {
+                var temp_date=date_temp_array[i];
+                if (temp_date.getDate()==date.getDate() && temp_date.getMonth()==date.getMonth() ) {
+                    return true;
+                }
+            };
+            return false;     
+        }
+        function disable_tabs(){
+            for (var i = 0; i < 12; i++) {
+                document.getElementById(i).className='month_tab';
+            };
+        }
+        function count_working_hours(year, month){            
+            var month_end_date=get_total_days_in_moth(year,month);
+            var count=0;
+            var count_holidays=document.getElementById('hide_holidayshide_holidays').checked;
+            console.log(count_holidays);
+            for (var i = 1; i <= month_end_date.getDate(); i++) {
+                var month_start_date=get_first_day_of_month(year,month,i);
+                if (count_holidays==false) {
+                    if (month_start_date.getDay()!=0 && month_start_date.getDay()!=6 &&  check_holiday(month_start_date)==false) {
+                        count++;
+                    }
+                }  
+                else if (count_holidays==true) {
+                    if (month_start_date.getDay()!=0 && month_start_date.getDay()!=6) {
+                        count++;
+                    }
+                }
+            };
+            document.getElementById("working_days").innerHTML="Works days this month: "+count+"<br>Works hours this month: "+count*8;
+        }
+      </script>
+  </body>
 </html>
